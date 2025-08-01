@@ -1,6 +1,7 @@
 from sentence_transformers import SentenceTransformer
 import chromadb
 from utils import load_articles
+import os
 
 # ✅ Setup persistent ChromaDB client
 client = chromadb.PersistentClient(path="./db")
@@ -29,16 +30,32 @@ def build_vector_db():
 
     print(f"✅ Loaded {len(texts)} chunks into ChromaDB.")
 
-def retrieve_context(query: str, k=3, return_sources=False):
-    query_embedding = model.encode([query])[0].tolist()
-    results = collection.query(query_embeddings=[query_embedding], n_results=k, include=["documents", "metadatas"])
 
-    documents = results["documents"][0]
-    metadatas = results["metadatas"][0]
+def retrieve_context(query, k=3, return_sources=False):
+    """
+    Retrieves top-k relevant chunks using semantic search.
+    Optionally returns associated source filenames.
+    """
+    query_embedding = model.encode(query).tolist()
+
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=k,
+        include=["documents", "metadatas"]
+    )
+
+    chunks = results["documents"][0]
+    sources = []
 
     if return_sources:
-        # 🔐 Protect against None metadata
-        sources = [(meta.get("source") if isinstance(meta, dict) else "Unknown") for meta in metadatas]
-        return documents, sources
-    else:
-        return documents
+        metadatas = results.get("metadatas", [[]])[0]
+        for meta in metadatas:
+            if isinstance(meta, dict):
+                source_path = meta.get("source", "Unknown")
+            else:
+                source_path = "Unknown"
+            filename = os.path.basename(source_path) if source_path else "Unknown"
+            sources.append(filename)
+        return chunks, sources
+
+    return chunks

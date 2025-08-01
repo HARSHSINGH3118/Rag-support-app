@@ -51,10 +51,11 @@ if st.button("Submit") and query:
 
     # Escalation check
     escalated, reason = check_escalation(
-        [q for q, _ in st.session_state.chat_history],
-        st.session_state.sentiments,
-        return_reason=True
-    )
+    [q for q, _ in st.session_state.chat_history],
+    st.session_state.sentiments,
+    return_reason=True
+)
+
 
     # Store full entry
     st.session_state.chat_history.append((query, response))

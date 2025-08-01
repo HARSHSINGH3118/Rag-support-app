@@ -19,32 +19,30 @@ logging.basicConfig(
     format="%(asctime)s - ESCALATION - %(message)s"
 )
 
-# Email alert config (set these in .env)
+# Email alert config
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-ALERT_EMAIL = "harsh_singh@srmap.edu.in"  # You can change this if needed
+ALERT_EMAIL = "harsh_singh@srmap.edu.in"  # Change if needed
 
-def check_escalation(message_history: list[str], sentiment_history: list[str]) -> bool:
+def check_escalation(message_history: list[str], sentiment_history: list[str], return_reason=False):
     """
     Checks whether escalation is needed based on sentiment and keywords.
-    Returns True if triggered. Also logs and sends alerts.
+    Returns True or (True, reason) if return_reason=True.
     """
-    # Count recent 'very negative' sentiments
-    negative_count = sum(1 for s in sentiment_history[-3:] if "very negative" in s)
+    if not message_history or not sentiment_history:
+        return (False, None) if return_reason else False
 
-    if negative_count >= 2:
-        log_and_warn(message_history[-1], reason="Repeated very negative sentiment")
-        return True
 
     # Keyword-based escalation
     escalation_keywords = ["angry", "cancel", "complain", "worst", "useless", "frustrated", "refund"]
     last_message = message_history[-1].lower()
 
     if any(word in last_message for word in escalation_keywords):
-        log_and_warn(message_history[-1], reason="Trigger keyword detected")
-        return True
+        reason = "Trigger keyword detected"
+        log_and_warn(message_history[-1], reason=reason)
+        return (True, reason) if return_reason else True
 
-    return False
+    return (False, None) if return_reason else False
 
 def log_and_warn(message: str, reason: str):
     """

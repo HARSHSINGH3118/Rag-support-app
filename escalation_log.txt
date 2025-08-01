@@ -13,3 +13,10 @@
 2025-08-02 00:43:31,036 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: 1. Why is your service so bad?
 2025-08-02 00:54:36,128 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: This is the worst experience ever
 2025-08-02 00:57:25,617 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: This is the worst experience ever
+2025-08-02 02:06:06,825 - ESCALATION - Use pytorch device_name: cpu
+2025-08-02 02:06:06,826 - ESCALATION - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-08-02 02:10:52,694 - ESCALATION - Escalation triggered due to: Trigger keyword detected | Message: I want to cancel my order it is coming too late
+2025-08-02 02:29:40,604 - ESCALATION - Use pytorch device_name: cpu
+2025-08-02 02:29:40,605 - ESCALATION - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-08-02 02:31:15,677 - ESCALATION - Use pytorch device_name: cpu
+2025-08-02 02:31:15,677 - ESCALATION - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
