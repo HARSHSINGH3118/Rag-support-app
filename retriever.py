@@ -1,14 +1,16 @@
+import os
+os.environ["ALLOW_CHROMA_DB_INSECURE"] = "true"  # ✅ This allows Chroma to run in Streamlit Cloud
+
 from sentence_transformers import SentenceTransformer
 import chromadb
 from utils import load_articles
-import os
 
-# ✅ Use in-memory Chroma client for Streamlit Cloud
+# Use in-memory client for cloud deployment
 client = chromadb.EphemeralClient()
 collection = client.get_or_create_collection(name="help_articles")
 
-# ✅ Load sentence embedding model
 model = SentenceTransformer('all-MiniLM-L6-v2')
+
 
 def build_vector_db():
     chunks_with_sources = load_articles("articles")  # [(chunk, source), ...]
