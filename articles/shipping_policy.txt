@@ -1,1 +1,22 @@
-Shipping is free for orders above ₹500. Orders typically arrive within 5 to 7 business days.
+Shipping Policy:
+
+We strive to ensure that your order is processed and delivered as quickly and smoothly as possible.
+
+1. **Processing Time**: Orders are typically processed within 1–2 business days after confirmation. You will receive an email confirmation with tracking details once your order has shipped.
+
+2. **Shipping Methods**: We offer standard, expedited, and express shipping options. The estimated delivery times will be displayed at checkout based on your selected method and location.
+
+3. **Delivery Time**: 
+   - Standard Shipping: 5–7 business days
+   - Expedited Shipping: 2–4 business days
+   - Express Shipping: 1–2 business days
+
+4. **Shipping Charges**: Shipping fees are calculated at checkout based on the weight, dimensions, and destination of your package.
+
+5. **International Shipping**: We currently ship to select countries. Customs duties or taxes may apply and are the responsibility of the recipient.
+
+6. **Delays**: While we aim for timely delivery, external factors such as weather conditions or carrier delays may affect your shipment. We appreciate your understanding and patience.
+
+7. **Support**: For shipping-related issues or to track a delayed order, please reach out to our support team at support@example.com.
+
+Thank you for choosing us!

@@ -1,0 +1,5 @@
+Orders can be canceled within 12 hours of placement, as long as they haven’t been shipped. To cancel an order:
+1. Log into your account.
+2. Navigate to 'My Orders'.
+3. Select the order and click 'Cancel'.
+If the cancel option is unavailable, the order may already be in transit. In such cases, you can request a return after delivery.

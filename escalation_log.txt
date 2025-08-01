@@ -1,0 +1,15 @@
+2025-08-01 19:35:47,953 - ESCALATION - Escalation triggered due to: Trigger keyword detected | Message: This is useless. I want to cancel my subscription.
+2025-08-01 20:20:31,743 - ESCALATION - Escalation triggered due to: Trigger keyword detected | Message: This is terrible, I want a refund!
+2025-08-01 20:24:43,579 - ESCALATION - Escalation triggered due to: Trigger keyword detected | Message: This is terrible, I want a refund!
+2025-08-01 22:56:47,973 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: Why hasnt my order arrived yet? Its been over 10 days and I havent received any updates.
+2025-08-01 23:49:08,335 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: How do I update my account details?
+2025-08-01 23:56:00,848 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: i am feeling very bad where is my order
+2025-08-02 00:33:10,756 - ESCALATION - Escalation triggered due to: Trigger keyword detected | Message: Where is my refund?
+2025-08-02 00:35:56,956 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: How do I reset my password?
+2025-08-02 00:36:24,875 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message:  hello where is order can you please tell
+2025-08-02 00:41:22,902 - ESCALATION - Use pytorch device_name: cpu
+2025-08-02 00:41:22,902 - ESCALATION - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-08-02 00:43:13,484 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: 1. Why is your service so bad? 2. Where is my refund? This is unacceptable!
+2025-08-02 00:43:31,036 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: 1. Why is your service so bad?
+2025-08-02 00:54:36,128 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: This is the worst experience ever
+2025-08-02 00:57:25,617 - ESCALATION - Escalation triggered due to: Repeated very negative sentiment | Message: This is the worst experience ever
