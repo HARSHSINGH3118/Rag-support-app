@@ -4,7 +4,7 @@ from utils import load_articles
 import os
 
 # ✅ Setup persistent ChromaDB client
-client = chromadb.PersistentClient(path="./db")
+client = chromadb.Client()
 collection = client.get_or_create_collection(name="help_articles")
 
 # ✅ Load sentence embedding model
