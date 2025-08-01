@@ -1,1 +1,6 @@
-
+streamlit
+sentence-transformers
+chromadb
+colorama
+python-dotenv
+pandas
