@@ -100,7 +100,7 @@ rpds-py==0.23.1
 rsa==4.9
 safetensors==0.5.3
 scikit-learn==1.7.1
-scipy==1.16.1
+scipy==1.11.4
 sentence-transformers==5.0.0
 setuptools==80.9.0
 shellingham==1.5.4
