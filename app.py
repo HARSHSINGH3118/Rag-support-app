@@ -46,54 +46,57 @@ if st.button("Submit") and query:
     st.session_state.sentiments.append(sentiment)
 
     context_chunks, source_files = retrieve_context(query, return_sources=True)
-    context_text = "\n".join(context_chunks)
-    response = generate_empathetic_reply(query, context_text, sentiment)
 
-    # Escalation check
-    escalated, reason = check_escalation(
-    [q for q, _ in st.session_state.chat_history],
-    st.session_state.sentiments,
-    return_reason=True
-)
+    if context_chunks:
+        context_text = "\n".join(context_chunks)
+        response = generate_empathetic_reply(query, context_text, sentiment)
 
+        # Escalation check
+        escalated, reason = check_escalation(
+            [q for q, _ in st.session_state.chat_history],
+            st.session_state.sentiments,
+            return_reason=True
+        )
 
-    # Store full entry
-    st.session_state.chat_history.append((query, response))
+        # Store full entry
+        st.session_state.chat_history.append((query, response))
 
-    # Chat messages
-    with st.chat_message("user"):
-        st.write(f"**You:** {query}")
+        # Chat messages
+        with st.chat_message("user"):
+            st.write(f"**You:** {query}")
 
-    with st.chat_message("assistant"):
-        st.markdown("📚 **Top Relevant Chunks:**")
-        for i, (chunk, source) in enumerate(zip(context_chunks, source_files)):
-            with st.expander(f"{i+1}. {source}"):
-                st.write(chunk)
-        st.info(f"🧠 Detected Sentiment: **{sentiment}**")
-        st.markdown(f"\n🤖 **AI Response:**\n{response}")
+        with st.chat_message("assistant"):
+            st.markdown("📚 **Top Relevant Chunks:**")
+            for i, (chunk, source) in enumerate(zip(context_chunks, source_files)):
+                with st.expander(f"{i+1}. {source}"):
+                    st.write(chunk)
+            st.info(f"🧠 Detected Sentiment: **{sentiment}**")
+            st.markdown(f"\n🤖 **AI Response:**\n{response}")
 
-        if escalated:
-            st.error(f"🚨 Escalation Detected: {reason}")
+            if escalated:
+                st.error(f"🚨 Escalation Detected: {reason}")
 
-    # Feedback (CSAT)
-    csat_key = f"csat_{len(st.session_state.chat_history)}"
-    if csat_key not in st.session_state:
-        st.session_state[csat_key] = None
+        # Feedback (CSAT)
+        csat_key = f"csat_{len(st.session_state.chat_history)}"
+        if csat_key not in st.session_state:
+            st.session_state[csat_key] = None
 
-    csat = st.radio("📝 Was this response helpful?", ["Yes", "No"], key=csat_key, horizontal=True)
+        csat = st.radio("📝 Was this response helpful?", ["Yes", "No"], key=csat_key, horizontal=True)
 
-    if len(st.session_state.chat_history) not in st.session_state.feedback_saved:
-        st.session_state.feedback_log.append((query, sentiment, response, csat))
-        st.session_state.feedback_saved.add(len(st.session_state.chat_history))
+        if len(st.session_state.chat_history) not in st.session_state.feedback_saved:
+            st.session_state.feedback_log.append((query, sentiment, response, csat))
+            st.session_state.feedback_saved.add(len(st.session_state.chat_history))
 
-        # Save to feedback_log.csv
-        feedback_file = "feedback_log.csv"
-        file_exists = os.path.isfile(feedback_file)
-        with open(feedback_file, mode="a", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            if not file_exists:
-                writer.writerow(["Query", "Sentiment", "AI Reply", "Feedback"])
-            writer.writerow([query, sentiment, response, csat])
+            # Save to feedback_log.csv
+            feedback_file = "feedback_log.csv"
+            file_exists = os.path.isfile(feedback_file)
+            with open(feedback_file, mode="a", newline="", encoding="utf-8") as file:
+                writer = csv.writer(file)
+                if not file_exists:
+                    writer.writerow(["Query", "Sentiment", "AI Reply", "Feedback"])
+                writer.writerow([query, sentiment, response, csat])
+    else:
+        st.warning("No relevant documents found for your query.")
 
 # Sidebar: Feedback Summary
 if st.sidebar.button("📊 Show Feedback Summary"):
