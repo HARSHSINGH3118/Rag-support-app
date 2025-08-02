@@ -1,6 +1,7 @@
 streamlit
 sentence-transformers
-chromadb
-colorama
-python-dotenv
+scikit-learn
 pandas
+numpy
+chromadb
+nltk
