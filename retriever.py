@@ -3,11 +3,12 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from utils import load_articles
+from typing import List, Tuple, Optional
 
 # Global storage for chunks, sources, and embeddings
-chunks: list[str] = []
-sources: list[str] = []
-embeddings: np.ndarray | None = None
+chunks: List[str] = []
+sources: List[str] = []
+embeddings: Optional[np.ndarray] = None
 
 # Load sentence embedding model once
 model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -19,15 +20,20 @@ def build_vector_db():
     """
     global chunks, sources, embeddings
 
-    data = load_articles("articles")  # returns List[Tuple[chunk_text, filename]]
+    # Always resolve articles directory relative to this file
+    base_dir = os.path.dirname(__file__)
+    articles_dir = os.path.join(base_dir, "articles")
+
+    data: List[Tuple[str, str]] = load_articles(articles_dir)
     if not data:
-        print("⚠️ No articles found in 'articles/' folder.")
+        print(f"⚠️ No articles/chunks found in '{articles_dir}'.")
+        embeddings = None
         return
 
     # Unzip into parallel lists
-    chunks, sources = zip(*data)  # chunks: tuple, sources: tuple
-    chunks = list(chunks)
-    sources = list(sources)
+    chunks_list, sources_list = zip(*data)
+    chunks = list(chunks_list)
+    sources = list(sources_list)
 
     # Compute embeddings matrix
     embeddings = model.encode(chunks, convert_to_numpy=True)

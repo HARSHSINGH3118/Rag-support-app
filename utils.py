@@ -1,19 +1,17 @@
 import os
-import shutil
+import re
 import nltk
-from nltk.tokenize import sent_tokenize
 
-# 🚨 Force delete broken punkt if it exists
-corrupted_path = os.path.join(nltk.data.find('tokenizers').path, 'punkt')
-if os.path.exists(corrupted_path):
-    shutil.rmtree(corrupted_path, ignore_errors=True)
-
-# ✅ Now ensure clean download
+# Try to load punkt; if it fails, we’ll fallback later
 try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
-    nltk.download('punkt')
+    try:
+        nltk.download('punkt', quiet=True)
+    except:
+        pass  # if download fails (e.g. offline), we’ll fallback
 
+from nltk.tokenize import sent_tokenize
 
 def load_articles(directory):
     """
@@ -21,33 +19,59 @@ def load_articles(directory):
     Returns: List of tuples (chunk_text, source_filename)
     """
     all_chunks = []
-    for filename in os.listdir(directory):
-        if filename.endswith(".txt"):
-            with open(os.path.join(directory, filename), "r", encoding="utf-8") as f:
-                text = f.read()
-                chunks = chunk_text(text)
-                all_chunks.extend([(chunk, filename) for chunk in chunks])
+    directory = os.path.abspath(directory)
+
+    if not os.path.isdir(directory):
+        print(f"⚠️ Directory not found: {directory}")
+        return all_chunks
+
+    found = False
+    for fname in sorted(os.listdir(directory)):
+        if not fname.lower().endswith(".txt"):
+            continue
+        found = True
+        path = os.path.join(directory, fname)
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                text = f.read().strip()
+            if not text:
+                continue
+            for chunk in chunk_text(text):
+                all_chunks.append((chunk, fname))
+        except Exception as e:
+            print(f"⚠️ Failed to process {fname}:\n{e}")
+
+    if not found:
+        print(f"⚠️ No articles found in '{directory}' folder.")
     return all_chunks
 
-
-def chunk_text(text, max_tokens=100):
+def chunk_text(text: str, max_tokens: int = 100) -> list[str]:
     """
-    Splits long text into smaller chunks of approx. max_tokens size.
+    Splits text into chunks of at most max_tokens words.
+    Falls back to regex sentence splitting if punkt is unavailable.
     """
-    sentences = sent_tokenize(text)
-    chunks, current_chunk, current_length = [], [], 0
+    # 1) Try NLTK sentence tokenizer
+    try:
+        sentences = sent_tokenize(text)
+    except (LookupError, Exception):
+        # Fallback: split on ., !, ? followed by whitespace
+        sentences = re.split(r'(?<=[\.\!\?])\s+', text)
 
-    for sentence in sentences:
-        tokens = sentence.split()
-        if current_length + len(tokens) > max_tokens:
-            chunks.append(" ".join(current_chunk))
-            current_chunk = tokens
-            current_length = len(tokens)
+    chunks = []
+    current, length = [], 0
+
+    for sent in sentences:
+        words = sent.split()
+        if length + len(words) > max_tokens:
+            if current:
+                chunks.append(" ".join(current))
+            current = words
+            length = len(words)
         else:
-            current_chunk.extend(tokens)
-            current_length += len(tokens)
+            current.extend(words)
+            length += len(words)
 
-    if current_chunk:
-        chunks.append(" ".join(current_chunk))
+    if current:
+        chunks.append(" ".join(current))
 
     return chunks
