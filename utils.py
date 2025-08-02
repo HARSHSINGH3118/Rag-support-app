@@ -1,9 +1,13 @@
 import os
-from nltk.tokenize import sent_tokenize
 import nltk
+from nltk.tokenize import sent_tokenize
 
-# Ensure nltk punkt path is correctly added
-nltk.data.path.append("C:/Users/harsh/AppData/Roaming/nltk_data")
+# ✅ Ensure 'punkt' tokenizer is available (works both locally & on Streamlit Cloud)
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+
 
 def load_articles(directory):
     """
@@ -19,12 +23,14 @@ def load_articles(directory):
                 all_chunks.extend([(chunk, filename) for chunk in chunks])  # 🔥 include source filename
     return all_chunks
 
+
 def chunk_text(text, max_tokens=100):
     """
     Splits long text into smaller chunks of approx. max_tokens size.
     """
     sentences = sent_tokenize(text)
     chunks, current_chunk, current_length = [], [], 0
+
     for sentence in sentences:
         tokens = sentence.split()
         if current_length + len(tokens) > max_tokens:
@@ -34,6 +40,8 @@ def chunk_text(text, max_tokens=100):
         else:
             current_chunk.extend(tokens)
             current_length += len(tokens)
+
     if current_chunk:
         chunks.append(" ".join(current_chunk))
+
     return chunks
