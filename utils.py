@@ -2,11 +2,11 @@ import os
 import nltk
 from nltk.tokenize import sent_tokenize
 
-# ✅ Ensure 'punkt' tokenizer is available (works both locally & on Streamlit Cloud)
+# ✅ Ensure exact 'english.pickle' punkt model is available (avoid 'punkt_tab' issue)
 try:
-    nltk.data.find('tokenizers/punkt')
+    nltk.data.find("tokenizers/punkt/english.pickle")
 except LookupError:
-    nltk.download('punkt')
+    nltk.download("punkt")
 
 
 def load_articles(directory):
@@ -20,7 +20,7 @@ def load_articles(directory):
             with open(os.path.join(directory, filename), "r", encoding="utf-8") as f:
                 text = f.read()
                 chunks = chunk_text(text)
-                all_chunks.extend([(chunk, filename) for chunk in chunks])  # 🔥 include source filename
+                all_chunks.extend([(chunk, filename) for chunk in chunks])
     return all_chunks
 
 
