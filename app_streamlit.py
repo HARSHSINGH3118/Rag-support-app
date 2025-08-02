@@ -43,8 +43,16 @@ query = st.text_input("Ask your question:", key="query_input")
 
 if st.button("Submit") and query:
     sentiment = analyze_sentiment(query)
-    context_docs = retrieve_context(query)  # returns documents with metadata
-    context_chunks = [(doc.page_content, doc.metadata.get("source", "unknown")) for doc in context_docs]
+    context_docs = retrieve_context(query)
+
+    # ✅ Fallback-compatible chunk parser
+    context_chunks = []
+    for doc in context_docs:
+        if isinstance(doc, str):
+            context_chunks.append((doc, "unknown"))
+        else:
+            context_chunks.append((doc.page_content, doc.metadata.get("source", "unknown")))
+
     context_text = "\n".join([chunk for chunk, _ in context_chunks])
     response = generate_empathetic_reply(query, context_text, sentiment)
 

@@ -129,3 +129,6 @@ websockets==15.0.1
 yarg==0.1.10
 zipp==3.23.0
 zstandard==0.23.0
+fastapi==0.100.0
+uvicorn==0.23.1
+python-multipart==0.0.6
