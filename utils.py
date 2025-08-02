@@ -1,12 +1,18 @@
 import os
+import shutil
 import nltk
 from nltk.tokenize import sent_tokenize
 
-# ✅ Ensure exact 'english.pickle' punkt model is available (avoid 'punkt_tab' issue)
+# 🚨 Force delete broken punkt if it exists
+corrupted_path = os.path.join(nltk.data.find('tokenizers').path, 'punkt')
+if os.path.exists(corrupted_path):
+    shutil.rmtree(corrupted_path, ignore_errors=True)
+
+# ✅ Now ensure clean download
 try:
-    nltk.data.find("tokenizers/punkt/english.pickle")
+    nltk.data.find('tokenizers/punkt')
 except LookupError:
-    nltk.download("punkt")
+    nltk.download('punkt')
 
 
 def load_articles(directory):
