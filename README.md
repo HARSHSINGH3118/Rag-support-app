@@ -6,7 +6,7 @@ Welcome to the **RAG Customer Support Assistant**, an end-to-end Retrieval-Augme
 
 ## 🌐 Live Demo
 
-🚀 **Deployment Link:** [https://your-streamlit-app-url](https://your-streamlit-app-url)
+🚀 **Deployment Link:** [https://your-streamlit-app-url](http://34.71.139.147:8000/)
 
 > *(Replace with your actual deployment link)*
 
